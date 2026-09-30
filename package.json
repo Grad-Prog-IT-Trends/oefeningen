@@ -1,0 +1,20 @@
+{
+  "name": "bliep-agent-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Lesdemo: zien wat een AI-agent doet, met de tools van de verzonnen webshop Bliep. Geen dependencies.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "setup": "node src/demo/setup.js",
+    "start": "node src/demo/run.js a",
+    "a": "node src/demo/run.js a",
+    "c": "node src/demo/run.js c",
+    "c-rem": "node src/demo/run.js c-rem",
+    "a:log": "node src/demo/run.js a --log",
+    "c:log": "node src/demo/run.js c --log",
+    "c-rem:log": "node src/demo/run.js c-rem --log",
+    "herspeel": "node src/demo/replay.js",
+    "herspeel:snel": "node src/demo/replay.js --snel"
+  }
+}
