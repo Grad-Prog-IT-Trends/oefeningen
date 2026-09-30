@@ -17,7 +17,13 @@ Loop deze lijst thuis af. Alles is gratis.
 
 ## Opstarten
 
-Buiten Node.js hoef je niets te installeren: de app gebruikt geen extra packages.
+De webserver gebruikt [Express](https://expressjs.com/). Installeer dat één keer, in de hoofdmap van de repo:
+
+```
+npm install
+```
+
+Daarna start je de app met:
 
 ```
 npm start
@@ -40,7 +46,7 @@ data/producten.json      de producten van Bliep
 data/kortingscodes.json  de kortingscodes die bestaan
 src/catalogus.js         producten opzoeken
 src/prijzen.js           alles wat met het bedrag van een mandje te maken heeft
-src/server.js            de webserver en de API
+src/server.js            de webserver en de API (Express)
 public/                  de webpagina (HTML, CSS en JavaScript)
 test/                    de tests
 ```
