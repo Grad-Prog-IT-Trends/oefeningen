@@ -130,23 +130,3 @@ Je hebt de `git config`-commando's uit [De repo ophalen](#de-repo-ophalen) nog n
 Doe één keer `git config --global pull.rebase false` en probeer opnieuw.
 
 Problemen die bij één les horen, staan in de README van die les.
-
-<!--
-Voor de lector
-
-Een nieuwe les toevoegen:
-1. Maak een branch `les-NN-onderwerp`. Bouwt de les verder op een vorige, vertrek dan van die branch
-   (bv. `git switch -c les-03-privacy les-02-ai-assistent`), anders van `main`.
-2. Zet de code in de hoofdmap en vervang README.md door die van de les. Laat bovenaan de verwijzing naar main staan.
-3. Voeg op main een rij toe aan de tabel "De lessen".
-4. Nieuwe software of een nieuw account nodig? Zet het bij "Voor je naar de eerste les komt".
-
-Een les aanpassen:
-- Werk met gewone commits op de branch van de les. Nooit force-pushen of de geschiedenis herschrijven,
-  anders krijgen studenten wel conflicten bij `git pull`.
-
-Lectormateriaal en oplossingen horen niet in deze repo, ook niet op een aparte branch: een AI-assistent
-in agent-mode leest alles wat in de map staat, en studenten kunnen elke branch ophalen.
-Het lectormateriaal staat in de private repo Grad-Prog-IT-Trends/oefeningen-lectoren, met een map per les
-(bv. les-02-ai-assistent/). Clone die naast deze repo, niet erin.
--->
