@@ -1,0 +1,10 @@
+[
+  { "id": "pixel-11-pro", "naam": "Pixel 11 Pro 256 GB", "categorie": "toestel", "prijs": 1099.00, "raffle": true },
+  { "id": "galaxy-s26-ultra", "naam": "Galaxy S26 Ultra 512 GB", "categorie": "toestel", "prijs": 1449.00, "raffle": true },
+  { "id": "fairphone-6", "naam": "Fairphone 6 128 GB", "categorie": "toestel", "prijs": 599.00, "raffle": false },
+  { "id": "iphone-15-refurb", "naam": "iPhone 15 refurbished (A-grade)", "categorie": "refurb", "prijs": 549.00, "raffle": false },
+  { "id": "hoesje-silicone", "naam": "Siliconen hoesje", "categorie": "accessoire", "prijs": 24.99, "raffle": false },
+  { "id": "screenprotector", "naam": "Screenprotector gehard glas", "categorie": "accessoire", "prijs": 20.15, "raffle": false },
+  { "id": "lader-45w", "naam": "Snellader 45 W", "categorie": "accessoire", "prijs": 39.95, "raffle": false },
+  { "id": "oortjes", "naam": "Draadloze oortjes", "categorie": "accessoire", "prijs": 89.00, "raffle": false }
+]

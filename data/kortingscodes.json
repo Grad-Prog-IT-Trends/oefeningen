@@ -1,0 +1,6 @@
+[
+  { "code": "WELKOM5", "percentage": 5, "geldigTot": "2026-12-31", "minimumBedrag": 0 },
+  { "code": "DROP10", "percentage": 10, "geldigTot": "2026-12-31", "minimumBedrag": 50 },
+  { "code": "HALFPRIJS", "percentage": 50, "geldigTot": "2026-12-31", "minimumBedrag": 20 },
+  { "code": "ZOMER25", "percentage": 25, "geldigTot": "2026-08-31", "minimumBedrag": 0 }
+]

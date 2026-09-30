@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bliep · als eerste de nieuwste smartphone</title>
+  <link rel="stylesheet" href="stijl.css">
+</head>
+<body>
+  <header>
+    <h1>Bliep</h1>
+    <p>Als eerste de nieuwste smartphone. Demo-omgeving, er wordt niets echt verkocht.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Producten</h2>
+      <ul id="producten" class="producten"></ul>
+    </section>
+    <aside>
+      <h2>Mandje</h2>
+      <ul id="mandje"></ul>
+      <label for="code">Kortingscode</label>
+      <div class="rij">
+        <input id="code" placeholder="bv. WELKOM5" autocomplete="off">
+        <button id="bereken">Bereken</button>
+      </div>
+      <p id="melding" class="melding"></p>
+      <table id="overzicht"></table>
+      <button id="leeg" class="stil">Mandje leegmaken</button>
+    </aside>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

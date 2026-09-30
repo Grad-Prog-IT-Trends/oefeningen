@@ -1,0 +1,18 @@
+body { font-family: system-ui, sans-serif; margin: 0; color: #002757; background: #f7f7f9; }
+header { background: #e30147; color: #fff; padding: 1rem 2rem; }
+header h1 { margin: 0; }
+main { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; padding: 2rem; }
+.producten { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+.producten li { background: #fff; border-radius: 8px; padding: 1rem; box-shadow: 0 1px 3px #0002; }
+.label { display: inline-block; font-size: .75rem; background: #fdd962; border-radius: 4px; padding: 0 .4rem; }
+aside { background: #fff; border-radius: 8px; padding: 1rem 1.5rem; box-shadow: 0 1px 3px #0002; align-self: start; }
+.rij { display: flex; gap: .5rem; margin: .3rem 0 1rem; }
+input { flex: 1; padding: .4rem; }
+button { background: #e30147; color: #fff; border: 0; border-radius: 4px; padding: .4rem .8rem; cursor: pointer; }
+button.stil { background: none; color: #002757; text-decoration: underline; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+td { padding: .2rem 0; }
+td:last-child { text-align: right; }
+tr.totaal td { font-weight: bold; border-top: 1px solid #ccc; }
+.melding { color: #b00020; min-height: 1.2em; }
+@media (max-width: 800px) { main { grid-template-columns: 1fr; } }

@@ -1,0 +1,14 @@
+{
+  "name": "bliep-demo-app",
+  "version": "1.0.0",
+  "description": "Demo-webshop van Bliep voor het vak IT Trends (UCLL)",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
