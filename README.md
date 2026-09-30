@@ -29,7 +29,7 @@ Doe dit thuis. Alles is gratis, en je hebt het de rest van het semester nodig. R
 - [ ] **Git**: [git-scm.com/downloads](https://git-scm.com/downloads). Controleer met `git --version`.
 - [ ] **VS Code**: [code.visualstudio.com](https://code.visualstudio.com)
 
-`npm install` hoef je in geen enkele les te doen. De projecten gebruiken geen extra packages, alleen Node.js zelf.
+Gebruikt een les extra packages (zoals Express in les 2), dan doe je bij het begin van die les één keer `npm install` in de hoofdmap van de repo. De README van de les zegt het als het nodig is.
 
 ### Accounts
 
@@ -147,5 +147,6 @@ Een les aanpassen:
 
 Lectormateriaal en oplossingen horen niet in deze repo, ook niet op een aparte branch: een AI-assistent
 in agent-mode leest alles wat in de map staat, en studenten kunnen elke branch ophalen.
-Het materiaal van les 2 staat in ../lectormateriaal/les-02-ai-assistent.
+Het lectormateriaal staat in de private repo Grad-Prog-IT-Trends/oefeningen-lectoren, met een map per les
+(bv. les-02-ai-assistent/). Clone die naast deze repo, niet erin.
 -->
