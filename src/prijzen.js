@@ -91,7 +91,7 @@ function berekenTotaal(regels, zoekProduct) {
     const product = zoekProduct(regel.id);
     if (!product) {
       // throw stopt de functie meteen met een fout. Wie de functie aanroept,
-      // kan die fout opvangen met try/catch (zie server.js).
+      // kan die fout opvangen (zie de foutafhandeling onderaan server.js).
       // De backticks `...` maken een template string: ${...} vult een waarde in.
       throw new Error(`Onbekend product: ${regel.id}`);
     }
