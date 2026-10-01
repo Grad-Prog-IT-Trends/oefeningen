@@ -15,7 +15,7 @@ Elke branch heeft een eigen README met de stappen voor die les. Lees die voor je
 
 ## Waarom een branch per les?
 
-Op elke branch staat alleen de code van die les, rechtstreeks in de hoofdmap. Pas je in les 1 iets aan, en past de lector daarna les 2 aan, dan raken die twee elkaar niet. Je krijgt dus geen conflicten tussen je eigen werk en de nieuwe oefeningen.
+Op elke branch staat alleen de code van die les. Pas je in les 1 iets aan, en past de lector daarna les 2 aan, dan raken die twee elkaar niet. Je krijgt dus geen conflicten tussen je eigen werk en de nieuwe oefeningen.
 
 Op `main` staat alleen deze README.
 
@@ -25,11 +25,11 @@ Doe dit thuis. Alles is gratis, en je hebt het de rest van het semester nodig. R
 
 ### Software
 
-- [ ] **Node.js**, versie 20 of hoger. Download de **LTS**-versie op [nodejs.org](https://nodejs.org). Controleer daarna met `node -v`.
+- [ ] **Node.js**, versie 22.18 of hoger. Download de **LTS**-versie op [nodejs.org](https://nodejs.org). Controleer daarna met `node -v`.
 - [ ] **Git**: [git-scm.com/downloads](https://git-scm.com/downloads). Controleer met `git --version`.
 - [ ] **VS Code**: [code.visualstudio.com](https://code.visualstudio.com)
 
-Gebruikt een les extra packages (zoals Express in les 2), dan doe je bij het begin van die les één keer `npm install` in de hoofdmap van de repo. De README van de les zegt het als het nodig is.
+Gebruikt een les extra packages (zoals Express in les 2), dan doe je bij het begin van die les één keer `npm install`. De README van de les zegt in welke map.
 
 ### Accounts
 
@@ -84,7 +84,7 @@ git switch les-02-ai-assistent
 
 Vervang `les-02-ai-assistent` door de branch uit de tabel hierboven. Je kan ook wisselen via de naam van de branch links onderaan in VS Code.
 
-**3. Open de README van de les** en volg de stappen. De commando's voer je uit in de hoofdmap van de repo.
+**3. Open de README van de les** en volg de stappen. Daar staat ook in welke map je de commando's uitvoert. Open in VS Code altijd de hoofdmap van de repo.
 
 ### Terug naar een vorige les
 
