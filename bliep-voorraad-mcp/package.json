@@ -1,0 +1,19 @@
+{
+  "name": "bliep-voorraad-mcp",
+  "version": "1.0.0",
+  "description": "Demo-MCP-server van Bliep: voorraad per winkel en leveringen, voor het vak IT Trends (UCLL)",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "kijk": "node kijk-mee.js",
+    "test": "node --test tests/voorraad.js tests/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "zod": "^4.6.5"
+  }
+}

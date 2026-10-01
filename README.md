@@ -49,7 +49,12 @@ src/prijzen.js           alles wat met het bedrag van een mandje te maken heeft
 src/server.js            de webserver en de API (Express)
 public/                  de webpagina (HTML, CSS en JavaScript)
 test/                    de tests
+bliep-voorraad-mcp/      een losse demo: een MCP-server voor de voorraad in de winkels
 ```
+
+## Demo: een MCP-server
+
+In de map [`bliep-voorraad-mcp/`](bliep-voorraad-mcp/) staat een kleine MCP-server die je AI-assistent laat opzoeken hoeveel toestellen er in de winkels van Bliep liggen. Hij staat los van de webshop, met eigen packages en eigen tests. Hoe je hem start en koppelt aan Copilot, lees je in de [README van de demo](bliep-voorraad-mcp/README.md).
 
 ## API
 

@@ -1,0 +1,17 @@
+{
+  "voorraad": {
+    "Antwerpen": { "pixel-11-pro": 7, "galaxy-s26-ultra": 2, "fairphone-6": 11, "iphone-15-refurb": 5 },
+    "Gent": { "pixel-11-pro": 4, "galaxy-s26-ultra": 0, "fairphone-6": 6, "iphone-15-refurb": 3 },
+    "Webshop": { "pixel-11-pro": 120, "galaxy-s26-ultra": 45, "fairphone-6": 80, "iphone-15-refurb": 18 }
+  },
+  "leveringen": {
+    "Antwerpen": [
+      { "product": "galaxy-s26-ultra", "aantal": 10, "dag": "donderdag" }
+    ],
+    "Gent": [
+      { "product": "pixel-11-pro", "aantal": 12, "dag": "vrijdag" },
+      { "product": "galaxy-s26-ultra", "aantal": 6, "dag": "vrijdag" }
+    ],
+    "Webshop": []
+  }
+}
