@@ -1,68 +1,26 @@
-# Bliep-demo-app
+# Les 2: werken met een AI-assistent
 
 > Les 2 van IT Trends. Voorbereiding en uitleg over de branches: zie de [README op `main`](../../tree/main).
 
-De webshop van Bliep, in een kleine demo-versie. Je gebruikt hem in verschillende lessen van IT Trends.
+Op deze branch staan twee dingen, elk in een eigen map:
+
+| Map | Wat | Uitleg |
+| --- | --- | --- |
+| [`webshop/`](webshop/) | de webshop van Bliep, in een kleine demo-versie. Hier werk je in de oefeningen. | [README van de webshop](webshop/README.md) |
+| [`mcp-demo/`](mcp-demo/) | een losse demo: een MCP-server die je AI-assistent laat opzoeken hoeveel toestellen er in de winkels van Bliep liggen | [README van de demo](mcp-demo/README.md) |
+
+Elke map heeft eigen packages en eigen tests. Je doet `npm install`, `npm start` en `npm test` dus altijd **in de map zelf**, niet in de hoofdmap. Open in VS Code wel de hoofdmap van de repo: zo ziet je AI-assistent alles.
 
 ## Voor je naar de les komt
 
 Loop deze lijst thuis af. Alles is gratis.
 
-- [ ] **Node.js**, versie 20 of hoger: https://nodejs.org/ (kies de LTS-versie). Controleer met `node --version`.
-- [ ] **Git**, om de repo te clonen: https://git-scm.com/downloads
-- [ ] **VS Code**: https://code.visualstudio.com/
-- [ ] **Een GitHub-account**: https://github.com/signup
+- [ ] **Node.js**, versie 22.18 of hoger: <https://nodejs.org/> (kies de LTS-versie). Controleer met `node --version`.
+- [ ] **Git**, om de repo te clonen: <https://git-scm.com/downloads>
+- [ ] **VS Code**: <https://code.visualstudio.com/>
+- [ ] **Een GitHub-account**: <https://github.com/signup>
 - [ ] **GitHub Copilot Free** geactiveerd (zie hieronder)
 - [ ] **Copilot Student aangevraagd**, ook al is het nog niet goedgekeurd (zie hieronder)
-
-## Opstarten
-
-De webserver gebruikt [Express](https://expressjs.com/). Installeer dat één keer, in de hoofdmap van de repo:
-
-```
-npm install
-```
-
-Daarna start je de app met:
-
-```
-npm start
-```
-
-Surf naar http://localhost:3000. Stopt de server niet vanzelf na een wijziging? Stop hem met Ctrl+C en start opnieuw.
-
-## Tests
-
-```
-npm test
-```
-
-Alle tests moeten groen zijn voor je iets oplevert.
-
-## Wat zit waar
-
-```
-data/producten.json      de producten van Bliep
-data/kortingscodes.json  de kortingscodes die bestaan
-src/catalogus.js         producten opzoeken
-src/prijzen.js           alles wat met het bedrag van een mandje te maken heeft
-src/server.js            de webserver en de API (Express)
-public/                  de webpagina (HTML, CSS en JavaScript)
-test/                    de tests
-bliep-voorraad-mcp/      een losse demo: een MCP-server voor de voorraad in de winkels
-```
-
-## Demo: een MCP-server
-
-In de map [`bliep-voorraad-mcp/`](bliep-voorraad-mcp/) staat een kleine MCP-server die je AI-assistent laat opzoeken hoeveel toestellen er in de winkels van Bliep liggen. Hij staat los van de webshop, met eigen packages en eigen tests. Hoe je hem start en koppelt aan Copilot, lees je in de [README van de demo](bliep-voorraad-mcp/README.md).
-
-## API
-
-| Methode | Pad | Wat |
-|---|---|---|
-| GET | /health | geeft `{ "status": "ok" }` als de app draait |
-| GET | /api/producten | alle producten |
-| POST | /api/mandje/totaal | berekent het mandje, body `{ "regels": [{ "id": "...", "aantal": 1 }], "code": "..." }` |
 
 ## Een gratis AI-assistent
 

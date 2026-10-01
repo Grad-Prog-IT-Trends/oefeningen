@@ -6,10 +6,10 @@
 // Deze tests gebruiken echte producten uit data/producten.json.
 
 // before() loopt één keer voor alle tests in dit bestand, after() één keer erna.
-const { test, before, after } = require('node:test');
-const assert = require('node:assert/strict');
+import { test, before, after } from 'node:test';
+import assert from 'node:assert/strict';
 // We laden de Express-app, maar die start nog niet vanzelf (zie onderaan src/server.js).
-const { app } = require('../src/server');
+import { app } from '../src/server.js';
 
 // De draaiende server en zijn adres, bv. 'http://localhost:53412'. We vullen ze in before().
 let server;

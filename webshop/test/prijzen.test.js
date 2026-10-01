@@ -20,9 +20,11 @@
 // We laden 'node:assert/strict'. Die vergelijkt streng, zoals === in plaats van ==.
 // Dus 1 en '1' zijn niet gelijk.
 
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const { berekenTotaal, bundelKorting, verzendkosten } = require('../src/prijzen');
+import { test } from 'node:test';
+// Zonder { } krijg je de standaard-export van een module: hier het object assert
+// met alle controles erin (assert.equal, assert.deepEqual, ...).
+import assert from 'node:assert/strict';
+import { berekenTotaal, bundelKorting, verzendkosten } from '../src/prijzen.js';
 
 // Kleine testcatalogus, los van de echte producten.
 // Zo blijven de tests kloppen als de prijzen in data/producten.json veranderen,

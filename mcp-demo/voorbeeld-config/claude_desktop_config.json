@@ -2,7 +2,7 @@
   "mcpServers": {
     "bliep-voorraad": {
       "command": "node",
-      "args": ["C:\\pad\\naar\\it-trends\\bliep-voorraad-mcp\\server.js"]
+      "args": ["C:\\pad\\naar\\it-trends\\mcp-demo\\server.js"]
     }
   }
 }

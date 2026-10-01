@@ -2,14 +2,14 @@
 // AI-app dat doet. Daarvoor gebruiken we de client uit dezelfde SDK.
 //
 // StdioClientTransport start server.js als apart proces en praat via stdin en stdout,
-// net zoals VS Code of Claude Desktop. Zie test/server.test.js in de webshop voor de
-// uitleg over before() en after(), en tests/voorraad.js voor de naam van deze map.
+// net zoals VS Code of Claude Desktop. Zie webshop/test/server.test.js voor de
+// uitleg over before() en after().
 
-const { test, before, after } = require('node:test');
-const assert = require('node:assert/strict');
-const path = require('node:path');
-const { Client } = require('@modelcontextprotocol/sdk/client/index.js');
-const { StdioClientTransport } = require('@modelcontextprotocol/sdk/client/stdio.js');
+import { test, before, after } from 'node:test';
+import assert from 'node:assert/strict';
+import path from 'node:path';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 const client = new Client({ name: 'bliep-test', version: '1.0.0' });
 
@@ -17,7 +17,8 @@ const client = new Client({ name: 'bliep-test', version: '1.0.0' });
 // verbergt de logregels van de server, zodat de testuitvoer leesbaar blijft.
 before(() => client.connect(new StdioClientTransport({
   command: process.execPath,
-  args: [path.join(__dirname, '..', 'server.js')],
+  // import.meta.dirname is de map van dit testbestand (test/).
+  args: [path.join(import.meta.dirname, '..', 'server.js')],
   stderr: 'ignore',
 })));
 after(() => client.close());

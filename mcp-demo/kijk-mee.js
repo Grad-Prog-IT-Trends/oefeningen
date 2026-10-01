@@ -14,9 +14,9 @@
 // In een echte AI-app beslist het taalmodel welke tools/call er komt. Hier staan de
 // oproepen vast in de lijst STAPPEN hieronder, zodat je elke keer hetzelfde ziet.
 
-const { spawn } = require('node:child_process');
-const path = require('node:path');
-const readline = require('node:readline');
+import { spawn } from 'node:child_process';
+import path from 'node:path';
+import readline from 'node:readline';
 
 const STAP_VOOR_STAP = process.argv.includes('--stap');
 
@@ -83,7 +83,7 @@ async function wachtOpEnter(toetsenbord) {
 async function main() {
   // Start de server zoals een AI-app dat doet: als apart proces, met pipes naar
   // stdin, stdout en stderr.
-  const server = spawn(process.execPath, [path.join(__dirname, 'server.js')], { stdio: ['pipe', 'pipe', 'pipe'] });
+  const server = spawn(process.execPath, [path.join(import.meta.dirname, 'server.js')], { stdio: ['pipe', 'pipe', 'pipe'] });
   // Wat de server op stderr logt, tonen we gewoon door.
   server.stderr.on('data', (stuk) => process.stderr.write(stuk));
 

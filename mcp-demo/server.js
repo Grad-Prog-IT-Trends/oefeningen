@@ -19,12 +19,12 @@
 // Het protocol schrijven we niet zelf. Dat doet de officiële SDK
 // (@modelcontextprotocol/sdk). Wij zeggen alleen welke tools er zijn en wat ze doen.
 
-const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
-const { StdioServerTransport } = require('@modelcontextprotocol/sdk/server/stdio.js');
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 // zod beschrijft welke argumenten een tool verwacht. De SDK maakt daar het schema van
 // dat de AI-app te zien krijgt, en controleert de argumenten voor jouw code loopt.
-const { z } = require('zod');
-const { WINKELS, voorraadOpvragen, leveringenOpvragen } = require('./src/voorraad');
+import { z } from 'zod';
+import { WINKELS, voorraadOpvragen, leveringenOpvragen } from './src/voorraad.js';
 
 /**
  * Schrijft een logregel naar stderr.
@@ -91,7 +91,7 @@ server.registerTool('leveringen_opvragen', {
 
 // De server praat via stdin en stdout (stdio). Dat is de gewone manier voor een
 // MCP-server die op je eigen computer draait.
-// connect() geeft een Promise terug. Met .then() loggen we pas als de verbinding klaar is.
-server.connect(new StdioServerTransport()).then(() => {
-  log('gestart, wacht op berichten op stdin');
-});
+// connect() geeft een Promise terug. In een ES-module mag je await ook buiten een
+// async functie gebruiken: we loggen pas als de verbinding klaar is.
+await server.connect(new StdioServerTransport());
+log('gestart, wacht op berichten op stdin');

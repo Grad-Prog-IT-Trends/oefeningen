@@ -1,9 +1,12 @@
 // Front-end van de Bliep-demo-app. Houdt het mandje bij en vraagt het totaal op aan de server.
 //
-// Let op: deze code draait in de browser, niet in Node. Daarom is er hier geen
-// require() en geen module.exports. Wel heb je document, waarmee je de HTML-pagina
-// (index.html) kan lezen en aanpassen. De berekening zelf gebeurt op de server:
-// de browser stuurt het mandje op en toont wat de server terugstuurt.
+// Let op: deze code draait in de browser, niet in Node. Je hebt hier document,
+// waarmee je de HTML-pagina (index.html) kan lezen en aanpassen. De berekening zelf
+// gebeurt op de server: de browser stuurt het mandje op en toont wat de server terugstuurt.
+//
+// index.html laadt dit bestand met <script type="module">. Zo kan je hier, net als
+// in Node, met import een ander bestand uit public/ gebruiken, bv.
+// import { iets } from './ander-bestand.js'.
 
 // Een Map is een lijst van sleutel-waardeparen, hier: product-id -> aantal.
 const mandje = new Map(); // id -> aantal

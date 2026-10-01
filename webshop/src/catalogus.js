@@ -1,12 +1,13 @@
 // Leest de producten van Bliep in. In het echt komt dit uit een database,
 // voor de demo-app is een JSON-bestand genoeg.
 //
-// require() laadt een ander bestand in. Bij een .json-bestand zet Node de inhoud
+// import laadt een ander bestand in. Bij een .json-bestand zet Node de inhoud
 // meteen om naar gewone JavaScript-objecten, hier een array van producten.
+// with { type: 'json' } zegt Node dat het om JSON gaat en niet om JavaScript.
 // Het pad begint met ../ omdat data/ een map hoger staat dan src/.
 // Node leest het bestand één keer in, bij het opstarten. Pas je producten.json
 // aan, herstart dan de server.
-const producten = require('../data/producten.json');
+import producten from '../data/producten.json' with { type: 'json' };
 
 /**
  * Geeft alle producten van Bliep terug.
@@ -32,5 +33,6 @@ function zoekProduct(id) {
   return producten.find((p) => p.id === id) || null;
 }
 
-// Deze functies kunnen andere bestanden gebruiken via require('./catalogus').
-module.exports = { alleProducten, zoekProduct };
+// Deze functies kunnen andere bestanden gebruiken met
+// import { alleProducten, zoekProduct } from './catalogus.js'.
+export { alleProducten, zoekProduct };

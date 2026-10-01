@@ -10,20 +10,22 @@
 // Express overloopt alles van boven naar beneden, in de volgorde van dit bestand.
 // De eerste route die past, stuurt het antwoord.
 
-// require() laadt een module in. Het voorvoegsel node: betekent dat het een
+// import laadt een module in. Het voorvoegsel node: betekent dat het een
 // module is die in Node zelf zit. 'express' komt uit de map node_modules/
 // (geïnstalleerd met npm install). Een pad met ./ verwijst naar een eigen bestand.
-const path = require('node:path'); // paden naar bestanden samenstellen
-const express = require('express');
-// { alleProducten, zoekProduct } haalt twee functies uit het object dat
-// catalogus.js exporteert. Dat heet destructuring.
-const { alleProducten, zoekProduct } = require('./catalogus');
-const { berekenTotaal } = require('./prijzen');
+// Bij een eigen bestand schrijf je de extensie .js er altijd bij.
+import path from 'node:path'; // paden naar bestanden samenstellen
+import express from 'express';
+// { alleProducten, zoekProduct } haalt twee functies uit wat catalogus.js
+// exporteert. Je kiest zelf welke je nodig hebt.
+import { alleProducten, zoekProduct } from './catalogus.js';
+import { berekenTotaal } from './prijzen.js';
 
 // process.env bevat de omgevingsvariabelen. Is PORT niet ingesteld, dan nemen we 3000.
 const POORT = process.env.PORT || 3000;
-// __dirname is de map waarin dit bestand staat (src/). PUBLIC wordt dus <project>/public.
-const PUBLIC = path.join(__dirname, '..', 'public');
+// import.meta.dirname is de map waarin dit bestand staat (src/).
+// PUBLIC wordt dus <webshop>/public.
+const PUBLIC = path.join(import.meta.dirname, '..', 'public');
 
 /**
  * Schrijft een logregel naar de terminal, als JSON. Zo kan een programma de logs
@@ -96,12 +98,12 @@ app.use((fout, req, res, next) => {
   res.status(400).json({ fout: bericht });
 });
 
-// require.main === module is alleen waar als je dit bestand rechtstreeks start
+// import.meta.main is alleen true als je dit bestand rechtstreeks start
 // (npm start voert "node src/server.js" uit). Dan starten we de server.
-// Laden de tests dit bestand met require(), dan is het niet waar. De tests
-// starten de server dan zelf, op een vrije poort (zie test/server.test.js).
-if (require.main === module) {
+// Laden de tests dit bestand met import, dan is het false. De tests starten
+// de server dan zelf, op een vrije poort (zie test/server.test.js).
+if (import.meta.main) {
   app.listen(POORT, () => log('info', `Bliep draait op http://localhost:${POORT}`));
 }
 
-module.exports = { app };
+export { app };

@@ -3,7 +3,7 @@
     "bliep-voorraad": {
       "type": "stdio",
       "command": "node",
-      "args": ["${workspaceFolder}/bliep-voorraad-mcp/server.js"]
+      "args": ["${workspaceFolder}/mcp-demo/server.js"]
     }
   }
 }

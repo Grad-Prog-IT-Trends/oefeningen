@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Demo-MCP-server van Bliep: voorraad per winkel en leveringen, voor het vak IT Trends (UCLL)",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "kijk": "node kijk-mee.js",
-    "test": "node --test tests/voorraad.js tests/server.js"
+    "test": "node --test"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.18"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.31.0",

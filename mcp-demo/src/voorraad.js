@@ -6,10 +6,11 @@
 // welk deel MCP is en welk deel gewoon jouw code.
 
 // De voorraad per winkel en de geplande leveringen. Verzonnen data, zoals alles bij Bliep.
-const data = require('../data/voorraad.json');
-// De productnamen halen we uit de catalogus van de webshop, een map hoger.
+// with { type: 'json' } zegt Node dat het om JSON gaat en niet om JavaScript.
+import data from '../data/voorraad.json' with { type: 'json' };
+// De productnamen halen we uit de catalogus van de webshop, in de map ernaast.
 // Zo heten de producten in de demo exact zoals in de webshop.
-const producten = require('../../data/producten.json');
+import producten from '../../webshop/data/producten.json' with { type: 'json' };
 
 // Object.keys() geeft de namen van de velden: ['Antwerpen', 'Gent', 'Webshop'].
 const WINKELS = Object.keys(data.voorraad);
@@ -79,4 +80,4 @@ function leveringenOpvragen({ winkel }) {
   return lijst.map((l) => `${l.aantal} × ${naamVan(l.product)}, ${l.dag}`).join('\n');
 }
 
-module.exports = { WINKELS, vindWinkel, voorraadOpvragen, leveringenOpvragen };
+export { WINKELS, vindWinkel, voorraadOpvragen, leveringenOpvragen };

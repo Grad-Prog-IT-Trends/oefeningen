@@ -1,16 +1,11 @@
 // Tests voor src/voorraad.js: de logica achter de tools, zonder MCP.
 //
-// Starten doe je in de map bliep-voorraad-mcp met: npm test
-// Zie test/prijzen.test.js in de webshop voor de uitleg over test() en assert.
-//
-// Waarom heet de map tests/ en niet test/, en het bestand niet voorraad.test.js?
-// npm test in de webshop (node --test) zoekt in alle mappen naar test/ en *.test.js.
-// Met deze namen neemt de webshop de tests van de MCP-demo niet mee. De demo heeft
-// eigen packages: zonder npm install in deze map zouden die tests daar falen.
+// Starten doe je in de map mcp-demo met: npm test
+// Zie webshop/test/prijzen.test.js voor de uitleg over test() en assert.
 
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const { WINKELS, vindWinkel, voorraadOpvragen, leveringenOpvragen } = require('../src/voorraad');
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { WINKELS, vindWinkel, voorraadOpvragen, leveringenOpvragen } from '../src/voorraad.js';
 
 test('er zijn drie winkels', () => {
   assert.deepEqual(WINKELS, ['Antwerpen', 'Gent', 'Webshop']);

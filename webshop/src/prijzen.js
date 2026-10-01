@@ -2,8 +2,8 @@
 // Bedragen zijn in euro, altijd inclusief btw.
 //
 // Dit bestand is een "module": een los JavaScript-bestand met functies.
-// Onderaan staat module.exports. Alleen wat daar staat, kunnen andere
-// bestanden gebruiken via require('./prijzen').
+// Onderaan staat export { ... }. Alleen wat daar staat, kunnen andere bestanden
+// gebruiken, met bv. import { berekenTotaal } from './prijzen.js'.
 //
 // Boven elke functie staat een commentaar in de vorm /** ... */ (JSDoc).
 // VS Code toont die uitleg als je met je muis over de naam van de functie gaat.
@@ -120,4 +120,4 @@ function berekenTotaal(regels, zoekProduct) {
 }
 
 // Deze functies stellen we open voor andere bestanden (de server en de tests).
-module.exports = { rondAf, regelBedrag, bundelKorting, verzendkosten, berekenTotaal };
+export { rondAf, regelBedrag, bundelKorting, verzendkosten, berekenTotaal };

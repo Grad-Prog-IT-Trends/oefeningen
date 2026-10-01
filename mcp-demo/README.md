@@ -1,4 +1,4 @@
-# bliep-voorraad-mcp: een MCP-server van dichtbij
+# Demo: een MCP-server van dichtbij
 
 Een kleine MCP-server voor de demo in les 2. De webshop weet niet hoeveel toestellen er in de winkels van Bliep liggen. Deze server wel: hij geeft een AI-assistent twee tools, allebei **read-only**.
 
@@ -7,7 +7,7 @@ Een kleine MCP-server voor de demo in les 2. De webshop weet niet hoeveel toeste
 | `voorraad_opvragen(product, winkel)` | hoeveel stuks van een toestel er nu in Antwerpen, Gent of de webshop liggen |
 | `leveringen_opvragen(winkel)` | welke leveringen er deze week gepland zijn |
 
-De data is verzonnen en staat in `data/voorraad.json`. De namen van de producten komen uit de catalogus van de webshop (`../data/producten.json`).
+De data is verzonnen en staat in `data/voorraad.json`. De namen van de producten komen uit de catalogus van de webshop (`../webshop/data/producten.json`).
 
 ## Wat is MCP?
 
@@ -21,12 +21,14 @@ Het model voert dus nooit zelf code uit. Het vraagt het aan de app, en de server
 
 ## Installeren
 
-De demo heeft eigen packages: de officiële MCP SDK en zod. Installeer ze één keer, **in deze map**:
+De demo heeft eigen packages: de officiële MCP SDK en zod. Installeer ze één keer, **in deze map**. Vanuit de hoofdmap van de repo:
 
 ```text
-cd bliep-voorraad-mcp
+cd mcp-demo
 npm install
 ```
+
+Alle commando's hieronder voer je ook uit in de map `mcp-demo`.
 
 ## Demo 1: meekijken zonder AI-app
 
@@ -44,7 +46,7 @@ In de les gebruik je best `npm run kijk -- --stap`. Dan wacht het script op Ente
 
 ## Demo 2: koppelen aan GitHub Copilot in VS Code
 
-1. Kopieer `voorbeeld-config/vscode-mcp.json` naar `.vscode/mcp.json` in de hoofdmap van de repo. Maak de map `.vscode` aan als ze nog niet bestaat.
+1. Open de **hoofdmap van de repo** in VS Code (niet de map `mcp-demo`). Kopieer `mcp-demo/voorbeeld-config/vscode-mcp.json` naar `.vscode/mcp.json` in die hoofdmap. Maak de map `.vscode` aan als ze nog niet bestaat.
 2. Open `.vscode/mcp.json` in VS Code. Boven `"bliep-voorraad"` staat een knopje **Start**. Klik erop.
 3. Open de Copilot-chat en zet hem in **Agent**-modus. Bij het icoontje van de tools zie je nu `bliep-voorraad` met de twee tools.
 4. Stel een vraag, bijvoorbeeld:
@@ -71,7 +73,7 @@ server.js           de MCP-server: welke tools er zijn en wat ze doen
 src/voorraad.js     de logica achter de tools, zonder MCP
 data/voorraad.json  de voorraad per winkel en de leveringen
 kijk-mee.js         een client die het gesprek met de server toont
-tests/              de tests
+test/               de tests
 voorbeeld-config/   configuratie voor VS Code en Claude Desktop
 ```
 
