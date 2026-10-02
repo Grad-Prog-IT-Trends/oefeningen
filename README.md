@@ -58,3 +58,14 @@ Lukt geen van drie? Dan werk je in het labo met de gratis webversie van een chat
 ### Let op met je gegevens
 
 Werk alleen met de demo-app, nooit met echte klantgegevens of wachtwoorden. Gratis versies mogen je invoer soms gebruiken om hun modellen te verbeteren. Daar komen we in les 3 op terug.
+
+## Problemen oplossen
+
+**`npm` zegt `Could not read package.json` of `ENOENT`**
+Je staat in de hoofdmap van de repo. Ga eerst naar de juiste map, bv. `cd webshop`, en probeer opnieuw.
+
+**Na `git pull` staan de bestanden in de map `webshop/`**
+Dat klopt: de webshop en de MCP-demo staan sinds kort elk in een eigen map. Je eigen bewaarde werk is mee verhuisd. Doe één keer `npm install` in `webshop/`.
+
+**`npm start` stopt meteen, zonder de regel "Bliep draait op http://localhost:3000"**
+Je Node.js is waarschijnlijk te oud. Controleer met `node --version`: je hebt minstens 22.18 nodig. Installeer anders de LTS-versie.
