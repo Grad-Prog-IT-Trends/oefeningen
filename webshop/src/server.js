@@ -20,6 +20,7 @@ import express from 'express';
 // exporteert. Je kiest zelf welke je nodig hebt.
 import { alleProducten, zoekProduct } from './catalogus.js';
 import { berekenTotaal } from './prijzen.js';
+import { raffleActief, telInschrijvingen, schrijfIn } from './raffle.js';
 
 // process.env bevat de omgevingsvariabelen. Is PORT niet ingesteld, dan nemen we 3000.
 const POORT = process.env.PORT || 3000;
@@ -58,6 +59,34 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// GET /api/config: wat de omgeving instelt. Deze waarden komen uit omgevingsvariabelen,
+// niet uit de code. In les 4 stel je ze in via config/bliep.env, en die file
+// pas je alleen aan via een pull request.
+// Geen variabele ingesteld? Dan nemen we een standaardwaarde (na de ||).
+app.get('/api/config', (req, res) => {
+  res.json({
+    banner: process.env.BANNER_TEKST || '',
+    dropModus: process.env.DROP_MODUS || 'uit',
+    omgeving: process.env.OMGEVING || 'lokaal',
+    versie: process.env.GIT_COMMIT || 'lokaal',
+  });
+});
+
+// GET /api/raffle: hoeveel mensen zich al inschreven voor de volgende raffle.
+// async: we wachten op de database. Zonder database antwoorden we met 503
+// (Service Unavailable): de webshop werkt, alleen de raffle niet.
+app.get('/api/raffle', async (req, res) => {
+  if (!raffleActief()) return res.status(503).json({ fout: 'De raffle heeft geen database' });
+  res.json(await telInschrijvingen());
+});
+
+// POST /api/raffle: inschrijven met { "email": "..." }.
+// Een fout (bv. een ongeldig e-mailadres) gaat naar de foutafhandeling onderaan.
+app.post('/api/raffle', async (req, res) => {
+  if (!raffleActief()) return res.status(503).json({ fout: 'De raffle heeft geen database' });
+  res.json(await schrijfIn(req.body?.email));
+});
+
 // GET /api/producten: de volledige catalogus.
 app.get('/api/producten', (req, res) => {
   res.json(alleProducten());
@@ -74,9 +103,8 @@ app.post('/api/mandje/totaal', (req, res) => {
   const regels = Array.isArray(body.regels) ? body.regels : [];
   const overzicht = berekenTotaal(regels, zoekProduct);
 
-  // TODO les 2: kortingscode toepassen.
-  // De front-end stuurt al een veld "code" mee (of niets als het vakje leeg is).
-  // De geldige codes staan in data/kortingscodes.json.
+  // De kortingscode bouwde je in les 2, op je eigen branch. Hier zit ze niet in:
+  // in les 4 draait alles rond de omgeving, niet rond de code.
 
   res.json(overzicht);
 });

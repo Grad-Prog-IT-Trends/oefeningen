@@ -53,3 +53,19 @@ test('mandje met een toestel en een hoesje', async () => {
   assert.equal(data.subtotaal, 623.99);
   assert.equal(data.totaal, 623.99);
 });
+
+// Les 4: de configuratie komt uit omgevingsvariabelen. In de tests is er niets
+// ingesteld, dus verwachten we de standaardwaarden.
+test('config geeft standaardwaarden zonder omgevingsvariabelen', async () => {
+  const r = await fetch(`${basis}/api/config`);
+  assert.equal(r.status, 200);
+  const data = await r.json();
+  assert.equal(data.dropModus, 'uit');
+  assert.equal(data.versie, 'lokaal');
+});
+
+// Zonder DATABASE_URL werkt de webshop, maar de raffle niet: 503.
+test('raffle zonder database geeft 503', async () => {
+  const r = await fetch(`${basis}/api/raffle`);
+  assert.equal(r.status, 503);
+});

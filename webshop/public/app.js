@@ -83,8 +83,58 @@ async function bereken() {
     (data.totaal !== undefined ? `<tr class="totaal"><td>Totaal</td><td>${euro(data.totaal)}</td></tr>` : '');
 }
 
+/**
+ * Haalt de configuratie van de omgeving op (GET /api/config) en toont de banner
+ * en, onderaan de pagina, welke versie er draait. Zo zie je in les 4 meteen
+ * of jouw pull request al uitgerold is.
+ */
+async function laadConfig() {
+  const config = await (await fetch('/api/config')).json();
+  const banner = document.getElementById('banner');
+  banner.textContent = config.banner;
+  banner.hidden = !config.banner;
+  banner.classList.toggle('drop', config.dropModus === 'aan');
+  document.getElementById('versie').textContent = `Omgeving: ${config.omgeving} · versie: ${config.versie}`;
+}
+
+/**
+ * Toont hoeveel mensen zich al inschreven voor de raffle (GET /api/raffle).
+ * Geeft de server 503, dan draait de webshop zonder database.
+ */
+async function laadRaffle() {
+  const info = document.getElementById('raffle-info');
+  const antwoord = await fetch('/api/raffle');
+  if (!antwoord.ok) {
+    info.textContent = 'De raffle is even niet beschikbaar: er is geen database.';
+    return;
+  }
+  const data = await antwoord.json();
+  info.textContent = `${data.inschrijvingen} inschrijvingen voor de ${data.toestel}.`;
+  document.getElementById('raffle-form').hidden = false;
+}
+
+/**
+ * Schrijft het ingevulde e-mailadres in (POST /api/raffle).
+ */
+async function schrijfIn() {
+  const email = document.getElementById('raffle-email').value;
+  const antwoord = await fetch('/api/raffle', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  const data = await antwoord.json();
+  document.getElementById('raffle-melding').textContent = data.fout || '';
+  if (antwoord.ok) {
+    document.getElementById('raffle-info').textContent = `${data.inschrijvingen} inschrijvingen voor de ${data.toestel}. Je bent erbij!`;
+  }
+}
+
 // De knoppen koppelen aan hun functie, en bij het laden van de pagina
 // eerst de producten ophalen en daarna een (leeg) overzicht tonen.
 document.getElementById('bereken').onclick = bereken;
 document.getElementById('leeg').onclick = () => { mandje.clear(); bereken(); };
+document.getElementById('raffle-knop').onclick = schrijfIn;
 laadProducten().then(bereken);
+laadConfig();
+laadRaffle();

@@ -1,71 +1,94 @@
-# Les 2: werken met een AI-assistent
+# Les 4: Infrastructure as Code en GitOps
 
-> Les 2 van IT Trends. Voorbereiding en uitleg over de branches: zie de [README op `main`](../../tree/main).
+> Les 4 van IT Trends. Voorbereiding en uitleg over de branches: zie de [README op `main`](../../tree/main).
 
-Op deze branch staan twee dingen, elk in een eigen map:
+Vandaag beschrijf je de volledige omgeving van Bliep als code, breek je ze af en bouw je ze in één commando weer op. Daarna rol je een wijziging uit zonder ooit zelf aan de server te komen: alleen via een pull request.
 
-| Map | Wat | Uitleg |
-| --- | --- | --- |
-| [`webshop/`](webshop/) | de webshop van Bliep, in een kleine demo-versie. Hier werk je in de oefeningen. | [README van de webshop](webshop/README.md) |
-| [`mcp-demo/`](mcp-demo/) | een losse demo: een MCP-server die je AI-assistent laat opzoeken hoeveel toestellen er in de winkels van Bliep liggen | [README van de demo](mcp-demo/README.md) |
-
-Elke map heeft eigen packages en eigen tests. Je doet `npm install`, `npm start` en `npm test` dus altijd **in de map zelf**, niet in de hoofdmap. Open in VS Code wel de hoofdmap van de repo: zo ziet je AI-assistent alles.
+Alle commando's voer je uit **in de hoofdmap van de repo**, niet in `webshop/`.
 
 ## Voor je naar de les komt
 
-Loop deze lijst thuis af. Alles is gratis.
+Doe dit thuis. Op het schoolnetwerk met twintig mensen tegelijk duurt het downloaden van images lang.
 
-- [ ] **Node.js**, versie 22.18 of hoger: <https://nodejs.org/> (kies de LTS-versie). Controleer met `node --version`.
-- [ ] **Git**, om de repo te clonen: <https://git-scm.com/downloads>
-- [ ] **VS Code**: <https://code.visualstudio.com/>
-- [ ] **Een GitHub-account**: <https://github.com/signup>
-- [ ] **GitHub Copilot Free** geactiveerd (zie hieronder)
-- [ ] **Copilot Student aangevraagd**, ook al is het nog niet goedgekeurd (zie hieronder)
+- [ ] **Docker Desktop** geïnstalleerd en gestart: <https://www.docker.com/products/docker-desktop/>. Je kent het uit IT Landscape. Controleer met `docker compose version`.
+- [ ] **De images alvast binnengehaald.** Eén keer, met Docker Desktop gestart:
 
-## Een gratis AI-assistent
+```text
+docker pull node:22-alpine
+docker pull postgres:17-alpine
+docker pull caddy:2-alpine
+```
 
-Voor het labo heb je geen betalende licentie nodig.
+- [ ] **Je GitHub-account** werkt, en je kan inloggen in VS Code (je deed dat in les 2 voor Copilot).
 
-### 1. GitHub Copilot Free (de standaard)
+## Wat zit waar
 
-Werkt meteen, zonder verificatie.
+```text
+compose.yaml                   de omgeving van Bliep, als code (labo deel 1: hier vul je aan)
+config/bliep.env               banner, dropmodus en omgeving (labo deel 2: dit wijzig je via een pull request)
+db/init.sql                    maakt de tabel voor de raffle, de eerste keer dat de database start
+proxy/Caddyfile                de instellingen van de reverse proxy
+webshop/                       de webshop uit les 2, nu met een Dockerfile, een banner en een raffle
+gitops/sync.js                 de GitOps-agent: houdt "de server" gelijk aan main
+gitops/controleer-config.js    de controle op config/bliep.env, die de GitHub Action gebruikt
+.github/workflows/controle.yml de GitHub Action die elke pull request controleert
+```
 
-1. Log in op GitHub en activeer het gratis plan: https://github.com/github-copilot/free_signup
-   Je kan je plan ook nakijken via https://github.com/settings/copilot
-2. Installeer de extensie **GitHub Copilot** in VS Code en log in met je GitHub-account.
-   Handleiding: https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/set-up-copilot/install-copilot-extension
+## Deel 1: van klik naar code
 
-Je krijgt elke maand een beperkt aantal chat- en agent-verzoeken. Je deelt die tussen het labo en de opdracht thuis, dus ga er zuinig mee om.
+De stappen staan op je labofiche. Kort:
 
-### 2. GitHub Copilot Student (meer, ook gratis)
+```text
+docker compose up -d --build     opstarten (of bijwerken na een wijziging)
+docker compose ps                wat draait er, en is het gezond?
+docker compose logs web          de logs van één service
+docker compose down              afbreken, de gegevens blijven
+docker compose down -v           afbreken, de gegevens zijn ook weg
+```
 
-1. Vraag GitHub Education aan met je UCLL-e-mailadres: https://github.com/settings/education/benefits
-   Uitleg over de aanvraag: https://docs.github.com/en/education/about-github-education/github-education-for-students/apply-to-github-education-as-a-student
-2. Na goedkeuring activeer je Copilot Student op dezelfde pagina.
-   Uitleg: https://docs.github.com/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-students
+Is alles klaar, dan surf je naar <http://localhost:8080>.
 
-De goedkeuring en de activatie kunnen samen enkele dagen duren. Zie je na je goedkeuring alleen betalende opties? Betaal niets, wacht een paar dagen en probeer opnieuw.
+## Deel 2: deployen via een pull request
 
-### 3. Plan B: Gemini Code Assist
+Je laptop speelt twee rollen: je werkplek, en "de server" (de map `server/`, die maakt de agent zelf aan). De stappen staan op je labofiche. Kort:
 
-Geen GitHub-account, of zijn je verzoeken op? Gemini Code Assist heeft een gratis versie voor individuele gebruikers. Je hebt een Google-account nodig.
+1. Maak op GitHub een lege, **publieke** repo `bliep-gitops`, zonder README.
+2. Zet je werk erop, vanuit de terminal van VS Code:
 
-- Installeer de extensie **Gemini Code Assist** in VS Code en log in met je Google-account.
-- Handleiding: https://developers.google.com/gemini-code-assist/docs/set-up-gemini
+```text
+git add -A
+git commit -m "les 4: compose-file volledig"
+git remote add mijn https://github.com/<jouw-gebruikersnaam>/bliep-gitops.git
+git push -u mijn les-04-iac-gitops:main
+```
 
-Lukt geen van drie? Dan werk je in het labo met de gratis webversie van een chatbot en plak je de code zelf over. Dat mag, zeg het wel aan je lector.
+3. Stop je stack van deel 1 (`docker compose down`) en start de agent in een tweede terminal:
 
-### Let op met je gegevens
+```text
+node gitops/sync.js
+```
 
-Werk alleen met de demo-app, nooit met echte klantgegevens of wachtwoorden. Gratis versies mogen je invoer soms gebruiken om hun modellen te verbeteren. Daar komen we in les 3 op terug.
+4. Wijzig `config/bliep.env` op een eigen branch, open een pull request op GitHub, wacht op het groene vinkje en merge. Binnen vijftien seconden volgt de server.
 
 ## Problemen oplossen
 
-**`npm` zegt `Could not read package.json` of `ENOENT`**
-Je staat in de hoofdmap van de repo. Ga eerst naar de juiste map, bv. `cd webshop`, en probeer opnieuw.
+**`docker` wordt niet herkend, of `Cannot connect to the Docker daemon`**
+Docker Desktop draait niet. Start het en wacht tot het walvisje stilstaat.
 
-**Na `git pull` staan de bestanden in de map `webshop/`**
-Dat klopt: de webshop en de MCP-demo staan sinds kort elk in een eigen map. Je eigen bewaarde werk is mee verhuisd. Doe één keer `npm install` in `webshop/`.
+**`port is already allocated` bij poort 8080**
+Er draait nog iets anders op 8080, vaak je stack van deel 1. Doe `docker compose down` in de hoofdmap en probeer opnieuw.
 
-**`npm start` stopt meteen, zonder de regel "Bliep draait op http://localhost:3000"**
-Je Node.js is waarschijnlijk te oud. Controleer met `node --version`: je hebt minstens 22.18 nodig. Installeer anders de LTS-versie.
+**`yaml: line 42: did not find expected key`**
+Een fout in het inspringen. YAML werkt met spaties, twee per niveau, nooit met tabs. Vergelijk je regel met dezelfde regel bij `web`.
+
+**`dependency failed to start: container bliep-db-1 is unhealthy`**
+Kijk in `docker compose logs db`. Meestal klopt het wachtwoord of de gebruikersnaam niet met wat in `DATABASE_URL` van `web` staat.
+
+**De raffle toont nog drie inschrijvingen, ook al wijzigde je `db/init.sql`**
+Dat script draait alleen als de database leeg is. Je volume bestaat nog. `docker compose down -v` en opnieuw `up`.
+
+**`git push` vraagt een wachtwoord**
+Je wachtwoord van GitHub werkt daar niet. Doe de push vanuit de terminal van **VS Code**: die laat je inloggen via de browser.
+
+**De agent zegt `Ik vind geen remote met de naam "mijn"`**
+Stap 2 van deel 2 is niet gelukt, of je gaf de remote een andere naam. Start de agent met `node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops.git`.

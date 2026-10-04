@@ -16,3 +16,7 @@ td:last-child { text-align: right; }
 tr.totaal td { font-weight: bold; border-top: 1px solid #ccc; }
 .melding { color: #b00020; min-height: 1.2em; }
 @media (max-width: 800px) { main { grid-template-columns: 1fr; } }
+.banner { background: #002757; color: #fff; padding: .7rem 2rem; font-weight: bold; }
+.banner.drop { background: #fcd963; color: #002757; }
+.raffle { border-top: 1px solid #ddd; margin-top: 1rem; padding-top: .5rem; }
+footer { padding: 1rem 2rem; font-size: .85rem; color: #46566a; }

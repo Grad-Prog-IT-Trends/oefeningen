@@ -1,9 +1,0 @@
-{
-  "servers": {
-    "bliep-voorraad": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["${workspaceFolder}/mcp-demo/server.js"]
-    }
-  }
-}

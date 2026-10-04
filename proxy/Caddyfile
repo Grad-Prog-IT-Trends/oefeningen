@@ -1,0 +1,7 @@
+# De reverse proxy van Bliep. Caddy luistert op poort 80 in zijn container
+# en stuurt elk verzoek door naar de service web, op poort 3000.
+# "web" is de naam van de service in compose.yaml: Docker zorgt dat die naam
+# in het netwerk van de stack naar de juiste container wijst.
+:80 {
+	reverse_proxy web:3000
+}

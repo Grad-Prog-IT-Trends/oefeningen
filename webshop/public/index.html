@@ -11,6 +11,8 @@
     <h1>Bliep</h1>
     <p>Als eerste de nieuwste smartphone. Demo-omgeving, er wordt niets echt verkocht.</p>
   </header>
+  <!-- De banner toont BANNER_TEKST uit de configuratie. Leeg? Dan blijft hij verborgen. -->
+  <div id="banner" class="banner" hidden></div>
   <main>
     <section>
       <h2>Producten</h2>
@@ -27,8 +29,18 @@
       <p id="melding" class="melding"></p>
       <table id="overzicht"></table>
       <button id="leeg" class="stil">Mandje leegmaken</button>
+      <section class="raffle">
+        <h2>Raffle</h2>
+        <p id="raffle-info">De raffle laden...</p>
+        <div class="rij" id="raffle-form" hidden>
+          <input id="raffle-email" type="email" placeholder="jouw@e-mail.be" autocomplete="off">
+          <button id="raffle-knop">Schrijf me in</button>
+        </div>
+        <p id="raffle-melding" class="melding"></p>
+      </section>
     </aside>
   </main>
+  <footer id="versie">Omgeving: ? · versie: ?</footer>
   <!-- type="module": app.js mag import gebruiken, net als de code in Node. -->
   <script type="module" src="app.js"></script>
 </body>

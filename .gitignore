@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Les 4: de map van de "server" van de GitOps-agent. Die hoort niet in git.
+server/
