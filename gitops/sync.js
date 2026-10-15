@@ -1,10 +1,12 @@
-// De GitOps-agent van Bliep. Speelt de rol van wat Argo CD of Flux in het echt doen.
+// De sync-tool van Bliep: een mini-versie van wat Argo CD en Flux (Kubernetes),
+// of Portainer en Komodo (Docker) in het echt doen.
+// Geen AI: een gewoon programma dat vergelijkt en gelijkzet. Het beslist niets zelf.
 //
 // Je laptop speelt vandaag twee rollen:
 //   1. je eigen werkplek: hier pas je code aan, maak je branches en open je pull requests.
 //   2. "de server" van Bliep: de map server/ in deze repo. Daar draait de omgeving.
 //
-// Deze agent draait naast de server en doet elke 15 seconden hetzelfde rondje:
+// Deze tool draait naast de server en doet elke 15 seconden hetzelfde rondje:
 //   - Is er een nieuwe commit op main in jouw repo bliep-gitops? Dan haalt hij die op en rolt hij uit.
 //   - Heeft iemand op de server zelf iets aangepast (drift)? Dan zet hij het terug zoals in git.
 //   - Draait er een service niet meer? Dan start hij ze opnieuw.
@@ -13,7 +15,7 @@
 //
 // Starten, vanuit de hoofdmap van de repo oefeningen (branch les-04-iac-gitops):
 //   node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops
-// Stoppen: Ctrl+C. De omgeving blijft dan draaien, alleen de agent stopt.
+// Stoppen: Ctrl+C. De omgeving blijft dan draaien, alleen de sync-tool stopt.
 
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -125,9 +127,9 @@ if (!existsSync(SERVER)) {
   voerUit('git', ['clone', '--quiet', '--branch', 'main', url, SERVER]);
   rolUit();
 }
-log(`GitOps-agent gestart. Ik volg main van ${url}, elke ${INTERVAL_SECONDEN} seconden.`);
+log(`Sync-tool gestart. Ik volg main van ${url}, elke ${INTERVAL_SECONDEN} seconden.`);
 
-// Een fout in één rondje (bv. even geen internet) mag de agent niet stoppen.
+// Een fout in één rondje (bv. even geen internet) mag de sync-tool niet stoppen.
 const veiligRondje = () => {
   try {
     rondje();

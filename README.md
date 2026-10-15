@@ -29,7 +29,7 @@ config/bliep.env               banner, dropmodus en omgeving (labo deel 2: dit w
 db/init.sql                    maakt de tabel voor de raffle, de eerste keer dat de database start
 proxy/Caddyfile                de instellingen van de reverse proxy
 webshop/                       de webshop uit les 2, nu met een Dockerfile, een banner en een raffle
-gitops/sync.js                 de GitOps-agent: houdt "de server" gelijk aan main
+gitops/sync.js                 de sync-tool: houdt "de server" gelijk aan main
 .github/pull_request_template.md  het sjabloon voor de beschrijving van een pull request
 ```
 
@@ -49,10 +49,10 @@ Is alles klaar, dan surf je naar <http://localhost:8080>.
 
 ## Deel 2: deployen via een pull request
 
-Je laptop speelt twee rollen: je werkplek, en "de server" (de map `server/`, die maakt de agent zelf aan). De stappen staan op je labofiche. Kort:
+Je laptop speelt twee rollen: je werkplek, en "de server" (de map `server/`, die maakt de sync-tool zelf aan). De stappen staan op je labofiche. Kort:
 
 1. Maak je eigen repo met **Use this template** op de sjabloonrepo die je lector deelt. Noem hem `bliep-gitops` en kies **Public**.
-2. Stop je omgeving van deel 1 (`docker compose down`) en start de agent:
+2. Stop je omgeving van deel 1 (`docker compose down`) en start de sync-tool:
 
 ```text
 node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops
@@ -79,8 +79,8 @@ Kijk in `docker compose logs db`. Meestal klopt het wachtwoord of de gebruikersn
 **De raffle toont nog drie inschrijvingen, ook al wijzigde je `db/init.sql`**
 Dat script draait alleen als de database leeg is. Je volume bestaat nog. `docker compose down -v` en opnieuw `up`.
 
-**De agent zegt `Welke repo moet ik volgen?`**
-Je vergat `--repo`. Start de agent met `node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops`.
+**De sync-tool zegt `Welke repo moet ik volgen?`**
+Je vergat `--repo`. Start de sync-tool met `node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops`.
 
-**De agent zegt `Repository not found`**
+**De sync-tool zegt `Repository not found`**
 Controleer je gebruikersnaam in de url, en of je repo op **Public** staat.
