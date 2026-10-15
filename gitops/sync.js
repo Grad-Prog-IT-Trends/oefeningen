@@ -5,15 +5,14 @@
 //   2. "de server" van Bliep: de map server/ in deze repo. Daar draait de omgeving.
 //
 // Deze agent draait naast de server en doet elke 15 seconden hetzelfde rondje:
-//   - Is er een nieuwe commit op main in jouw GitHub-repo? Dan haalt hij die op en rolt hij uit.
+//   - Is er een nieuwe commit op main in jouw repo bliep-gitops? Dan haalt hij die op en rolt hij uit.
 //   - Heeft iemand op de server zelf iets aangepast (drift)? Dan zet hij het terug zoals in git.
 //   - Draait er een service niet meer? Dan start hij ze opnieuw.
 // Dat rondje heet de reconcile loop: de server wordt telkens gelijkgezet aan de repo.
 // Niemand hoeft in te loggen op de server. De repo is de waarheid, de server volgt.
 //
-// Starten, vanuit de hoofdmap van de repo:
-//   node gitops/sync.js                    (gebruikt de remote met de naam "mijn")
-//   node gitops/sync.js --repo <url>       (of geef de url van je GitHub-repo zelf mee)
+// Starten, vanuit de hoofdmap van de repo oefeningen (branch les-04-iac-gitops):
+//   node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops
 // Stoppen: Ctrl+C. De omgeving blijft dan draaien, alleen de agent stopt.
 
 import { execFileSync } from 'node:child_process';
@@ -43,17 +42,13 @@ function log(bericht) {
   console.log(`[${uur}] ${bericht}`);
 }
 
-/** Zoekt de url van je GitHub-repo: uit --repo, of uit de remote "mijn". */
+/** Leest de url van je repo bliep-gitops uit --repo. */
 function zoekRepoUrl() {
   const plek = process.argv.indexOf('--repo');
   if (plek !== -1 && process.argv[plek + 1]) return process.argv[plek + 1];
-  try {
-    return voerUit('git', ['remote', 'get-url', 'mijn'], { cwd: HOOFDMAP });
-  } catch {
-    console.error('Ik vind geen remote met de naam "mijn". Volg stap 3 van deel 2 op je labofiche,');
-    console.error('of start me met: node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops.git');
-    process.exit(1);
-  }
+  console.error('Welke repo moet ik volgen? Start me zo, met jouw GitHub-gebruikersnaam:');
+  console.error('  node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops');
+  process.exit(1);
 }
 
 /** Git in de map van de server. */

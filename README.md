@@ -19,7 +19,7 @@ docker pull postgres:17-alpine
 docker pull caddy:2-alpine
 ```
 
-- [ ] **Je GitHub-account** werkt, en je kan inloggen in VS Code (je deed dat in les 2 voor Copilot).
+- [ ] **Je GitHub-account** werkt en je kan inloggen op github.com.
 
 ## Wat zit waar
 
@@ -30,8 +30,7 @@ db/init.sql                    maakt de tabel voor de raffle, de eerste keer dat
 proxy/Caddyfile                de instellingen van de reverse proxy
 webshop/                       de webshop uit les 2, nu met een Dockerfile, een banner en een raffle
 gitops/sync.js                 de GitOps-agent: houdt "de server" gelijk aan main
-gitops/controleer-config.js    de controle op config/bliep.env, die de GitHub Action gebruikt
-.github/workflows/controle.yml de GitHub Action die elke pull request controleert
+.github/pull_request_template.md  het sjabloon voor de beschrijving van een pull request
 ```
 
 ## Deel 1: van klik naar code
@@ -52,23 +51,16 @@ Is alles klaar, dan surf je naar <http://localhost:8080>.
 
 Je laptop speelt twee rollen: je werkplek, en "de server" (de map `server/`, die maakt de agent zelf aan). De stappen staan op je labofiche. Kort:
 
-1. Maak op GitHub een lege, **publieke** repo `bliep-gitops`, zonder README.
-2. Zet je werk erop, vanuit de terminal van VS Code:
+1. Maak je eigen repo met **Use this template** op de sjabloonrepo die je lector deelt. Noem hem `bliep-gitops` en kies **Public**.
+2. Stop je omgeving van deel 1 (`docker compose down`) en start de agent:
 
 ```text
-git add -A
-git commit -m "les 4: compose-file volledig"
-git remote add mijn https://github.com/<jouw-gebruikersnaam>/bliep-gitops.git
-git push -u mijn les-04-iac-gitops:main
+node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops
 ```
 
-3. Stop je stack van deel 1 (`docker compose down`) en start de agent in een tweede terminal:
+3. Wijzig `config/bliep.env` op GitHub zelf (het potloodje), kies **Create a new branch** en open een pull request. Merge hem. Binnen vijftien seconden volgt de server.
 
-```text
-node gitops/sync.js
-```
-
-4. Wijzig `config/bliep.env` op een eigen branch, open een pull request op GitHub, wacht op het groene vinkje en merge. Binnen vijftien seconden volgt de server.
+Automatische controles op die pull request zie je pas in les 5: dat is de pipeline.
 
 ## Problemen oplossen
 
@@ -87,8 +79,8 @@ Kijk in `docker compose logs db`. Meestal klopt het wachtwoord of de gebruikersn
 **De raffle toont nog drie inschrijvingen, ook al wijzigde je `db/init.sql`**
 Dat script draait alleen als de database leeg is. Je volume bestaat nog. `docker compose down -v` en opnieuw `up`.
 
-**`git push` vraagt een wachtwoord**
-Je wachtwoord van GitHub werkt daar niet. Doe de push vanuit de terminal van **VS Code**: die laat je inloggen via de browser.
+**De agent zegt `Welke repo moet ik volgen?`**
+Je vergat `--repo`. Start de agent met `node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops`.
 
-**De agent zegt `Ik vind geen remote met de naam "mijn"`**
-Stap 2 van deel 2 is niet gelukt, of je gaf de remote een andere naam. Start de agent met `node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops.git`.
+**De agent zegt `Repository not found`**
+Controleer je gebruikersnaam in de url, en of je repo op **Public** staat.
