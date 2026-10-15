@@ -28,7 +28,7 @@ services:
       PORT: 3000
       # "db" is de naam van de databaseservice hieronder. Docker maakt er een hostnaam van.
       DATABASE_URL: postgres://bliep:bliep-demo@db:5432/bliep
-      # Welke commit draait er? De GitOps-agent vult dit in. Lokaal staat er "lokaal".
+      # Welke commit draait er? De sync-tool vult dit in. Lokaal staat er "lokaal".
       GIT_COMMIT: ${GIT_COMMIT:-lokaal}
     # TODO 3: haal de # weg voor de vier regels hieronder zodra de service db bestaat.
     # Dan start de webshop pas als de database echt klaar is.
