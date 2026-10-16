@@ -10,6 +10,7 @@ Alles draait rond **Bliep**, een verzonnen webshop die smartphones verkoopt. De 
 | --- | --- | --- | --- |
 | 1 | Een AI-agent van dichtbij: wat een agent doet, en waarom de controle in de code hoort | [`les-01-agent`](../../tree/les-01-agent) | Node.js, gratis Gemini-sleutel |
 | 2 | Werken met een AI-assistent in je editor, op de code van de Bliep-webshop | [`les-02-ai-assistent`](../../tree/les-02-ai-assistent) | Node.js, Git, VS Code, GitHub Copilot |
+| 4 | Infrastructure as Code en GitOps: de omgeving als code, verwoesten en in één commando herstellen | [`les-04-iac-gitops`](../../tree/les-04-iac-gitops) | Docker Desktop, Git, VS Code |
 
 Elke branch heeft een eigen README met de stappen voor die les. Lees die voor je begint.
 
