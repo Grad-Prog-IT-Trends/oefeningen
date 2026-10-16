@@ -2,7 +2,7 @@
 
 > Les 4 van IT Trends. Voorbereiding en uitleg over de branches: zie de [README op `main`](../../tree/main).
 
-Vandaag beschrijf je de volledige omgeving van Bliep als code, breek je ze af en bouw je ze in één commando weer op. Daarna rol je een wijziging uit zonder ooit zelf aan de server te komen: alleen via een pull request.
+Vandaag beschrijf je de volledige omgeving van Bliep als code, breek je ze af en bouw je ze in één commando weer op. Daarna zie je in een demo hoe een wijziging via pull requests van development naar productie reist.
 
 Alle commando's voer je uit **in de hoofdmap van de repo**, niet in `webshop/`.
 
@@ -29,8 +29,6 @@ config/bliep.env               banner, dropmodus en omgeving (labo deel 2: dit w
 db/init.sql                    maakt de tabel voor de raffle, de eerste keer dat de database start
 proxy/Caddyfile                de instellingen van de reverse proxy
 webshop/                       de webshop uit les 2, nu met een Dockerfile, een banner en een raffle
-gitops/sync.js                 de sync-tool: houdt "de server" gelijk aan main
-.github/pull_request_template.md  het sjabloon voor de beschrijving van een pull request
 ```
 
 ## Deel 1: van klik naar code
@@ -47,20 +45,9 @@ docker compose down -v           afbreken, de gegevens zijn ook weg
 
 Is alles klaar, dan surf je naar <http://localhost:8080>.
 
-## Deel 2: deployen via een pull request
+## Deel 2: de demo
 
-Je laptop speelt twee rollen: je werkplek, en "de server" (de map `server/`, die maakt de sync-tool zelf aan). De stappen staan op je labofiche. Kort:
-
-1. Maak je eigen repo met **Use this template** op de sjabloonrepo die je lector deelt. Noem hem `bliep-gitops` en kies **Public**.
-2. Stop je omgeving van deel 1 (`docker compose down`) en start de sync-tool:
-
-```text
-node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops
-```
-
-3. Wijzig `config/bliep.env` op GitHub zelf (het potloodje), kies **Create a new branch** en open een pull request. Merge hem. Binnen vijftien seconden volgt de server.
-
-Automatische controles op die pull request zie je pas in les 5: dat is de pipeline.
+Je lector toont hoe één wijziging bij een echt team van `development` via `staging` naar productie reist, met GitHub Actions en Komodo. Jij vult de kijkwijzer in op je labofiche. Hier hoef je niets voor te installeren.
 
 ## Problemen oplossen
 
@@ -68,7 +55,7 @@ Automatische controles op die pull request zie je pas in les 5: dat is de pipeli
 Docker Desktop draait niet. Start het en wacht tot het walvisje stilstaat.
 
 **`port is already allocated` bij poort 8080**
-Er draait nog iets anders op 8080, vaak je stack van deel 1. Doe `docker compose down` in de hoofdmap en probeer opnieuw.
+Er draait nog iets anders op 8080, vaak een ander project. Doe `docker compose down` in de hoofdmap en probeer opnieuw.
 
 **`yaml: line 42: did not find expected key`**
 Een fout in het inspringen. YAML werkt met spaties, twee per niveau, nooit met tabs. Vergelijk je regel met dezelfde regel bij `web`.
@@ -79,8 +66,3 @@ Kijk in `docker compose logs db`. Meestal klopt het wachtwoord of de gebruikersn
 **De raffle toont nog drie inschrijvingen, ook al wijzigde je `db/init.sql`**
 Dat script draait alleen als de database leeg is. Je volume bestaat nog. `docker compose down -v` en opnieuw `up`.
 
-**De sync-tool zegt `Welke repo moet ik volgen?`**
-Je vergat `--repo`. Start de sync-tool met `node gitops/sync.js --repo https://github.com/<jij>/bliep-gitops`.
-
-**De sync-tool zegt `Repository not found`**
-Controleer je gebruikersnaam in de url, en of je repo op **Public** staat.
