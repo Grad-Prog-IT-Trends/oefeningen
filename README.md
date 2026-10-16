@@ -25,7 +25,7 @@ docker pull caddy:2-alpine
 
 ```text
 compose.yaml                   de omgeving van Bliep, als code (labo deel 1: hier vul je aan)
-config/bliep.env               banner, dropmodus en omgeving (labo deel 2: dit wijzig je via een pull request)
+config/bliep.env               banner, dropmodus en omgeving van de webshop
 db/init.sql                    maakt de tabel voor de raffle, de eerste keer dat de database start
 proxy/Caddyfile                de instellingen van de reverse proxy
 webshop/                       de webshop uit les 2, nu met een Dockerfile, een banner en een raffle
