@@ -8,6 +8,8 @@
 // Node leest het bestand één keer in, bij het opstarten. Pas je producten.json
 // aan, herstart dan de server.
 import producten from '../data/producten.json' with { type: 'json' };
+// lodash is een verzameling hulpfuncties. Hier gebruiken we er één van: _.find().
+import _ from 'lodash';
 
 /**
  * Geeft alle producten van Bliep terug.
@@ -21,16 +23,16 @@ function alleProducten() {
 /**
  * Zoekt één product op aan de hand van zijn id.
  *
- * find() loopt over de array en geeft het eerste element terug waarvoor de functie
- * true geeft. (p) => p.id === id is een arrow function: een korte schrijfwijze
- * voor function (p) { return p.id === id; }.
- * Vindt find() niets, dan geeft het undefined. Met || null maken we daar null van.
+ * _.find(lijst, { id }) geeft het eerste element terug met dezelfde id.
+ * Vindt het niets, dan geeft het undefined. Met || null maken we daar null van.
+ * (Ja, producten.find() uit gewoon JavaScript kan dit ook. Onthoud die gedachte
+ * voor de bespreking in les 5.)
  *
  * @param {string} id  bijvoorbeeld 'fairphone-6'
  * @returns {object | null}  het product, of null als het niet bestaat
  */
 function zoekProduct(id) {
-  return producten.find((p) => p.id === id) || null;
+  return _.find(producten, { id }) || null;
 }
 
 // Deze functies kunnen andere bestanden gebruiken met

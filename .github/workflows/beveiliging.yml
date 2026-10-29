@@ -1,0 +1,60 @@
+# De pipeline van Bliep, met beveiliging erin (les 5).
+#
+# Lees van boven naar beneden:
+#   on:    wanneer draait dit? Bij elke push naar deze branch en bij elke pull request.
+#   jobs:  wat draait er? Vier controles naast elkaar, en pas als ze ALLEMAAL groen
+#          zijn, bouwt de laatste job het image. Rood? Dan stopt de keten hier,
+#          net zoals op slide 20 van les 4.
+#
+# De scans zijn exact dezelfde commando's als op je laptop (zie scan.yaml).
+# Wat lokaal groen is, is hier ook groen. Dat is het hele idee.
+
+name: Beveiliging
+
+on:
+  push:
+    branches: [les-05-devsecops]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webshop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm test
+
+  geheimen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose -f scan.yaml run --rm geheimen
+
+  afhankelijkheden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose -f scan.yaml run --rm afhankelijkheden
+
+  code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose -f scan.yaml run --rm code
+
+  # needs: deze job start pas als de vier jobs hierboven geslaagd zijn.
+  image:
+    needs: [tests, geheimen, afhankelijkheden, code]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t bliep-web:${{ github.sha }} ./webshop
+      - run: echo "Alles groen. In een echt team gaat het image nu naar de registry, en rolt Komodo het uit."

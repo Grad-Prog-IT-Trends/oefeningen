@@ -1,80 +1,68 @@
 # compose.yaml: de volledige Bliep-omgeving, als code.
 #
-# Lees dit bestand als een beschrijving van het eindresultaat: welke services er
-# draaien, met welke instellingen. Je schrijft niet hoe Docker daar moet geraken.
-# Dat is het verschil tussen declaratief (dit bestand) en imperatief (losse
-# docker run-commando's, na elkaar getikt).
+# Dit is de compose-file uit les 4, volledig ingevuld. In les 5 verandert hier
+# bijna niets: alleen de regel PUSH_SLEUTEL bij web is nieuw.
 #
 # Opstarten:   docker compose up -d --build
 # Bekijken:    docker compose ps
 # Afbreken:    docker compose down        (de gegevens in de database blijven)
 # Verwoesten:  docker compose down -v     (ook de gegevens zijn weg)
 
-# De naam van de stack. Alle containers, netwerken en volumes beginnen met bliep-.
 name: bliep
 
 services:
 
-  # ------------------------------------------------------------------
-  # 1. De webshop. Deze service is VOLLEDIG: kijk hier af.
-  # ------------------------------------------------------------------
   web:
-    # Bouw het image zelf, met de Dockerfile in de map webshop/.
     build: ./webshop
-    # Instellingen die je via een pull request wijzigt: banner, dropmodus, omgeving.
     env_file: config/bliep.env
-    # Instellingen die bij deze stack horen.
     environment:
       PORT: 3000
-      # "db" is de naam van de databaseservice hieronder. Docker maakt er een hostnaam van.
       DATABASE_URL: postgres://bliep:bliep-demo@db:5432/bliep
-      # Welke commit draait er? In de demo bakt de CI dit in het image. Lokaal staat er "lokaal".
       GIT_COMMIT: ${GIT_COMMIT:-lokaal}
-    # TODO 3: haal de # weg voor de vier regels hieronder zodra de service db bestaat.
-    # Dan start de webshop pas als de database echt klaar is.
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
-    #     restart: true
-    # Hoe weet Docker of de webshop gezond is? Hij vraagt elke 5 seconden /health op.
+      # Les 5: een geheim hoort niet in git. Docker Compose leest de waarde uit het
+      # bestand .env in deze map. Dat bestand staat in .gitignore en gaat dus nooit mee.
+      # Geen .env? Dan is PUSH_SLEUTEL leeg en stuurt de webshop geen drop-meldingen.
+      PUSH_SLEUTEL: ${PUSH_SLEUTEL:-}
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
       interval: 5s
       timeout: 3s
       retries: 10
-    # Crasht de container, dan start Docker hem opnieuw. Behalve als jij hem stopt.
     restart: unless-stopped
-    # Geen ports: de webshop is niet rechtstreeks bereikbaar van buitenaf.
-    # Alle verkeer loopt via de reverse proxy.
 
-  # ------------------------------------------------------------------
-  # 2. TODO 1: de database
-  # ------------------------------------------------------------------
-  # Schrijf de service db, volgens hetzelfde patroon als web. Je hebt nodig:
-  #   image:        postgres:17-alpine       (geen build: dit image bestaat al)
-  #   environment:  POSTGRES_USER: bliep
-  #                 POSTGRES_PASSWORD: bliep-demo
-  #                 POSTGRES_DB: bliep
-  #   volumes:      dbdata:/var/lib/postgresql/data
-  #                 ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-  #   healthcheck:  test: ["CMD", "pg_isready", "-U", "bliep", "-d", "bliep"]
-  #                 met dezelfde interval, timeout en retries als web
-  #   restart:      unless-stopped
-  # Let op het inspringen: twee spaties per niveau, geen tabs.
-  # Een wachtwoord in een bestand in git? Voor een demo mag het. In les 5 zie je
-  # waarom dat in het echt niet kan, en hoe een pipeline het tegenhoudt.
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: bliep
+      # Een wachtwoord in een bestand in git? Voor een lokale demo met een database
+      # die nooit buiten je laptop komt, aanvaarden we het. Zie les 5, slide "Niet alles
+      # wat rood is, is een ramp".
+      POSTGRES_PASSWORD: bliep-demo
+      POSTGRES_DB: bliep
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "bliep", "-d", "bliep"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
 
-  # ------------------------------------------------------------------
-  # 3. TODO 2: de reverse proxy
-  # ------------------------------------------------------------------
-  # Schrijf de service proxy. Je hebt nodig:
-  #   image:        caddy:2-alpine
-  #   ports:        "8080:80"                (poort 8080 op je laptop, 80 in de container)
-  #   volumes:      ./proxy/Caddyfile:/etc/caddy/Caddyfile:ro
-  #   depends_on:   web, met condition: service_healthy
-  #   restart:      unless-stopped
+  proxy:
+    image: caddy:2-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./proxy/Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
 
-# TODO 1 (vervolg): een volume met een naam overleeft een gewone docker compose down.
-# Haal de # weg voor de twee regels hieronder.
-# volumes:
-#   dbdata:
+volumes:
+  dbdata:

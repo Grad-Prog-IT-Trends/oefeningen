@@ -7,6 +7,8 @@
 // verbindingen met de database open en hergebruikt ze, zodat niet elk verzoek
 // een nieuwe verbinding moet opzetten.
 import pg from 'pg';
+// validator is een bekende npm-package met kant-en-klare controles, bv. isEmail().
+import validator from 'validator';
 
 // Het toestel van de volgende raffle. In het echt komt dit uit de dropkalender.
 const TOESTEL = 'Galaxy S26 Ultra';
@@ -49,8 +51,8 @@ async function telInschrijvingen() {
  */
 async function schrijfIn(email) {
   const schoon = String(email ?? '').trim().toLowerCase();
-  // Een heel eenvoudige controle: iets, dan een @, dan iets met een punt erin.
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(schoon)) {
+  // Is dit een geldig e-mailadres? Dat laten we over aan de package validator.
+  if (!validator.isEmail(schoon)) {
     throw new Error('Dat lijkt geen geldig e-mailadres');
   }
   await pool.query(
@@ -60,4 +62,18 @@ async function schrijfIn(email) {
   return telInschrijvingen();
 }
 
-export { raffleActief, telInschrijvingen, schrijfIn };
+/**
+ * Zoekt de inschrijving van één e-mailadres op, voor de knop "Sta ik er al in?".
+ * Nieuw in les 5, geschreven door een collega met haast.
+ *
+ * @param {string} email
+ * @returns {Promise<{ email: string, ingeschreven_op: string }[]>}  de gevonden inschrijvingen
+ */
+async function zoekInschrijving(email) {
+  const resultaat = await pool.query(
+    `SELECT email, ingeschreven_op FROM raffle_inschrijvingen WHERE email = '${email}'`,
+  );
+  return resultaat.rows;
+}
+
+export { raffleActief, telInschrijvingen, schrijfIn, zoekInschrijving };

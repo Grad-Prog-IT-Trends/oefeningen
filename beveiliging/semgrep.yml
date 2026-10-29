@@ -1,0 +1,23 @@
+# Regels voor semgrep, de scanner die je code leest zonder ze uit te voeren
+# (statische analyse, SAST).
+#
+# Een echt team gebruikt een kant-en-klare set met honderden regels,
+# bv. --config p/owasp-top-ten. Hier staat er één, zodat je ze kan lezen:
+# een regel is gewoon een patroon in code, met een boodschap erbij.
+#
+# $DB staat voor eender wat (pool, client, db, ...). ${...} in een template
+# string betekent: hier wordt een waarde rechtstreeks in de tekst geplakt.
+
+rules:
+  - id: sql-injectie
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      Mogelijke SQL-injectie: je plakt een waarde rechtstreeks in de tekst van een
+      query. Wie die waarde kiest, kan je query herschrijven. Gebruik een parameter
+      ($1, $2, ...) en geef de waarde apart mee in een lijst, zoals in schrijfIn().
+    pattern-either:
+      - pattern: $DB.query(`...${...}...`, ...)
+      - pattern: $DB.query(`...${...}...`)
+      - pattern: $DB.query("..." + $X, ...)
+      - pattern: $DB.query("..." + $X)

@@ -1,0 +1,59 @@
+# scan.yaml: de drie beveiligingsscans van Bliep, als code.
+#
+# Elke service is één scan. Ze draaien in een container, dus je hoeft niets te
+# installeren: Docker haalt de scanner op en start hem. Exact dezelfde commando's
+# draaien in de pipeline op GitHub (.github/workflows/beveiliging.yml).
+#
+#   docker compose -f scan.yaml run --rm geheimen          zoekt sleutels en wachtwoorden in de code
+#   docker compose -f scan.yaml run --rm afhankelijkheden  zoekt bekende lekken in de npm-packages
+#   docker compose -f scan.yaml run --rm code              leest de code en zoekt gevaarlijke patronen
+#
+# Groen of rood? Een scan die iets vindt, stopt met een foutcode. In de pipeline
+# betekent dat: rood, en de keten stopt hier.
+#
+# De volumes eindigen op :ro (read-only): een scanner mag kijken, niet aanraken.
+
+name: bliep-scan
+
+services:
+
+  # 1. Geheimen: gitleaks zoekt sleutels, tokens en wachtwoorden.
+  # We tonen alleen wat met de webshop meegaat: de code, de config en de compose-file.
+  # Jouw .env staat er bewust niet bij: daar hoort een geheim net wel.
+  geheimen:
+    image: zricethezav/gitleaks:v8.28.0
+    command: ["dir", "/scan", "--config", "/regels/gitleaks.toml", "--redact=60", "--no-banner", "--verbose"]
+    volumes:
+      - ./webshop/src:/scan/webshop/src:ro
+      - ./webshop/public:/scan/webshop/public:ro
+      - ./config:/scan/config:ro
+      - ./compose.yaml:/scan/compose.yaml:ro
+      - ./beveiliging:/regels:ro
+
+  # 2. Afhankelijkheden: npm audit vergelijkt package-lock.json met een databank
+  # van bekende lekken. --audit-level=high: alleen high en critical maken de scan rood.
+  # Het image node:22-alpine heb je al sinds les 4.
+  afhankelijkheden:
+    image: node:22-alpine
+    working_dir: /scan
+    command: ["npm", "audit", "--omit=dev", "--audit-level=high"]
+    volumes:
+      - ./webshop/package.json:/scan/package.json:ro
+      - ./webshop/package-lock.json:/scan/package-lock.json:ro
+
+  # 3. Code: semgrep leest de broncode en zoekt patronen uit beveiliging/semgrep.yml.
+  # --error: één vondst is genoeg om rood te kleuren.
+  code:
+    image: semgrep/semgrep:1.180.0
+    command: ["semgrep", "scan", "--config", "/regels/semgrep.yml", "--error", "--metrics=off", "--disable-version-check", "/scan"]
+    volumes:
+      - ./webshop/src:/scan:ro
+      - ./beveiliging:/regels:ro
+
+  # 4. Alleen voor de demo van je lector: dezelfde zoektocht naar geheimen,
+  # maar nu in de volledige git-geschiedenis in plaats van in de bestanden van vandaag.
+  geschiedenis:
+    image: zricethezav/gitleaks:v8.28.0
+    command: ["git", "/repo", "--config", "/repo/beveiliging/gitleaks.toml", "--redact=60", "--no-banner", "--verbose"]
+    volumes:
+      - .:/repo:ro

@@ -1,0 +1,17 @@
+# Regels voor gitleaks, de scanner die geheimen zoekt.
+#
+# useDefault = true: we nemen alle standaardregels van gitleaks over
+# (AWS, GitHub, Stripe, private keys, ... meer dan 150 soorten sleutels).
+# Daarbovenop zetten we één eigen regel: de sleutels van de Bliep-pushdienst.
+# Zo werkt het in een echt bedrijf ook: de standaard, plus wat alleen jullie kennen.
+
+title = "Bliep"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "bliep-push-sleutel"
+description = "Live-sleutel van de pushdienst van Bliep"
+regex = '''bliep_live_[A-Za-z0-9]{32}'''
+keywords = ["bliep_live_"]

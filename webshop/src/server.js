@@ -16,11 +16,14 @@
 // Bij een eigen bestand schrijf je de extensie .js er altijd bij.
 import path from 'node:path'; // paden naar bestanden samenstellen
 import express from 'express';
+// uuid maakt unieke id's, bv. '3b241101-e2bb-4255-8caf-4136c566a962'.
+import { v4 as uuidv4 } from 'uuid';
 // { alleProducten, zoekProduct } haalt twee functies uit wat catalogus.js
 // exporteert. Je kiest zelf welke je nodig hebt.
 import { alleProducten, zoekProduct } from './catalogus.js';
 import { berekenTotaal } from './prijzen.js';
-import { raffleActief, telInschrijvingen, schrijfIn } from './raffle.js';
+import { raffleActief, telInschrijvingen, schrijfIn, zoekInschrijving } from './raffle.js';
+import { stuurDropMelding } from './notificaties.js';
 
 // process.env bevat de omgevingsvariabelen. Is PORT niet ingesteld, dan nemen we 3000.
 const POORT = process.env.PORT || 3000;
@@ -44,6 +47,27 @@ function log(niveau, bericht, extra = {}) {
 }
 
 const app = express();
+
+// Middleware (les 5): elk verzoek krijgt een uniek id en een logregel met de status
+// en de duur. Loopt er iets mis, dan zoek je met dat id alle regels van één verzoek op.
+// Zo ziet een log eruit waar je (of een AI) iets mee kan tijdens een incident.
+app.use((req, res, next) => {
+  req.id = uuidv4();
+  res.setHeader('X-Verzoek-Id', req.id);
+  const start = performance.now();
+  // 'finish' gebeurt als het antwoord volledig verstuurd is.
+  res.on('finish', () => {
+    if (req.path === '/health') return; // de healthcheck elke 5 seconden is ruis
+    log(res.statusCode >= 500 ? 'fout' : 'info', 'verzoek', {
+      verzoekId: req.id,
+      methode: req.method,
+      pad: req.originalUrl,
+      status: res.statusCode,
+      ms: Math.round(performance.now() - start),
+    });
+  });
+  next();
+});
 
 // Middleware: leest de body van een verzoek met Content-Type application/json
 // en zet die om naar een object in req.body.
@@ -87,6 +111,14 @@ app.post('/api/raffle', async (req, res) => {
   res.json(await schrijfIn(req.body?.email));
 });
 
+// GET /api/raffle/status?email=...: sta ik al ingeschreven, en sinds wanneer?
+// Nieuw in les 5.
+app.get('/api/raffle/status', async (req, res) => {
+  if (!raffleActief()) return res.status(503).json({ fout: 'De raffle heeft geen database' });
+  const gevonden = await zoekInschrijving(req.query.email ?? '');
+  res.json({ ingeschreven: gevonden.length > 0, inschrijvingen: gevonden });
+});
+
 // GET /api/producten: de volledige catalogus.
 app.get('/api/producten', (req, res) => {
   res.json(alleProducten());
@@ -122,7 +154,7 @@ app.use((req, res) => {
 app.use((fout, req, res, next) => {
   // Een body die geen geldige JSON is, geeft een fout van express.json().
   const bericht = fout.type === 'entity.parse.failed' ? 'Geen geldige JSON' : fout.message;
-  log('fout', bericht, { pad: req.url });
+  log('fout', bericht, { verzoekId: req.id, pad: req.url });
   res.status(400).json({ fout: bericht });
 });
 
@@ -131,7 +163,11 @@ app.use((fout, req, res, next) => {
 // Laden de tests dit bestand met import, dan is het false. De tests starten
 // de server dan zelf, op een vrije poort (zie test/server.test.js).
 if (import.meta.main) {
-  app.listen(POORT, () => log('info', `Bliep draait op http://localhost:${POORT}`));
+  app.listen(POORT, () => {
+    log('info', `Bliep draait op http://localhost:${POORT}`);
+    // Staat de dropmodus aan, dan krijgen alle klanten een pushmelding (les 5).
+    if (process.env.DROP_MODUS === 'aan') stuurDropMelding('Galaxy S26 Ultra', log);
+  });
 }
 
 export { app };
