@@ -2,16 +2,16 @@
 
 > Les 5 van IT Trends. Voorbereiding en uitleg over de branches: zie de [README op `main`](../../tree/main).
 
-Vandaag leer je een scanrapport lezen en beslissen wat eerst moet. Daarna los je zelf twee dingen op: de kwetsbare packages en een SQL-injectie. De stappen staan op je labofiche.
+In de les leer je een scanrapport lezen en beslissen wat eerst moet. Je hebt daar geen laptop met code nodig. Thuis, in de opdracht van les 5, los je zelf twee dingen op: de kwetsbare packages en een SQL-injectie. De stappen staan in de opdrachtfiche.
 
-## Voor je naar de les komt
+## Voor je aan de opdracht begint
 
 Je installeert niets nieuws. Je hebt nodig wat je in les 4 al had:
 
 - [ ] **Docker Desktop** gestart, met de images van les 4. Controleer met `docker compose version`.
 - [ ] **Node.js 22.18 of hoger**: `node -v`.
 
-## Wat je vandaag doet
+## Wat je thuis doet
 
 **1. De packages.** In de map `webshop`:
 
